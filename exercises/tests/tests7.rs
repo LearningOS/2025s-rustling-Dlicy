@@ -34,22 +34,24 @@
 // Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 fn main() {}
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
     fn test_success() {
-        let timestamp = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_secs();
-        let s = std::env::var("TEST_FOO").unwrap();
-        let e: u64 = s.parse().unwrap();
-        assert!(timestamp >= e && timestamp < e + 10);
-    }
+    // 必须与 build.rs 中设置的变量名完全一致
+    let timestamp = std::env::var("TEST_FOO").expect("TEST_FOO should be set by build.rs");
+    let parsed: u64 = timestamp.parse().unwrap();
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_secs();
+    
+    assert!(now >= parsed && now < parsed + 10, "now = {}, parsed = {}", now, parsed);
+}
 }

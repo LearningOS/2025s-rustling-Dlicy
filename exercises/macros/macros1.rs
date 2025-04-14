@@ -3,14 +3,17 @@
 // Execute `rustlings hint macros1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 macro_rules! my_macro {
     () => {
         println!("Check out my macro!");
     };
+    ($($arg:tt)*) => {
+        println!("Check out my macro! {}", format_args!($($arg)*));
+    }
 }
 
 fn main() {
-    my_macro();
+    my_macro!();
+    my_macro!("I can accept arguments too!");
 }
